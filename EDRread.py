@@ -80,9 +80,9 @@ class OpenEDR:
         array = self._initarray(9)
         return edr_elems.DMIonDensity(array, self._time).to_df() 
         
-    '''def engineering_data(self):
+    def engineering_data(self):
         array = self._initarray(10)
-        return edr_elems.Engineering_data(array,self._time).to_df()'''
+        return edr_elems.Engineering_data(array,self._time).to_df()
         
     
     

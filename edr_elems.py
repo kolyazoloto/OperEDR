@@ -108,17 +108,28 @@ class HorizontalIonDriftVelocity(EDRElems):
                             columns=['Horizontal_ion_drift_velocity'])   
 
         
-'''class Engineering_data(EDRElems):
+class Engineering_data(EDRElems):
     def __init__(self,array,time):
         super().__init__(array,time,1)
-        self.Engineering_data = []
+        temp = []
         for i in self._array:
-            self.Engineering_data.extend(i)
-        
+            temp.extend(i)
+        self.ADC_temperature = temp[1::7] 
+        self.SEP_temperature = temp[2::7]
+        self.RPA_plasma_plate_potential = temp[3::7]
+        self.DM_mode = temp[4::7]
+        self.EP_mode = temp[5::7]
+        self.VIP_at_edr_start = temp[6::7]
     def to_df(self):
-        return pd.DataFrame(self.Engineering_data,index = self.time,columns = ['Engineering_data'])'''
+        d = {'ADC_temperature':pd.Series(self.ADC_temperature,index=self.time),
+             'SEP_temperature':pd.Series(self.SEP_temperature,index=self.time),
+             'RPA_plasma_plate_potential':pd.Series(self.RPA_plasma_plate_potential,index=self.time),
+             'DM_model':pd.Series(self.DM_mode,index=self.time),
+             'EP_mode':pd.Series(self.EP_mode,index=self.time),
+             'VIP_at_edr_start':pd.Series(self.VIP_at_edr_start,index=self.time)}
+        return pd.DataFrame(d)
 
-        
+    
 class DMIonDensity(EDRElems):
     def __init__(self,array,time):
         super().__init__(array,time,60)
