@@ -86,16 +86,52 @@ def make_ion_density(filename,start='000000',end='235959', save=0):
     #colorbar
     cbar = plt.colorbar()
     cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
-    #cbar.ax.set_yticklabels(['1e4','2e4','3e4','4e4','5e4','6e4','7e4','8e4', '9e4'])
     #Подпищем оси
-    plt.xlabel(r'$\mathrm{Longitude, ^\circ}$', fontsize=14)
-    plt.ylabel(r'$\mathrm{Latitude,\ ^\circ}$', fontsize=14)
+    plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
+    plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
     #Поменяем размерность
     
     #Cохраняем изображение
+    root_dir = os.getcwd()
+    date_str = date.strftime('%Y-%m-%d')
     if save == 1:
-        name = lambda : date.strftime('%Y-%m-%d')+' ('+start+'--'+end+')'
-        os.chdir(os.getcwd()+'\\pictures')                                                                                        
+        name = lambda : start+'--'+end
+        os.chdir(root_dir+'\\pictures')
+        if date_str not in os.listdir():
+            os.mkdir(os.getcwd()+'\\'+date_str)
+        os.chdir(os.getcwd()+'\\'+date_str)                                                                                        
         plt.savefig(name(), dpi=1000)
+        os.chdir(root_dir)
+        
+#Цикл для вызова функции за весь цепь с периодом 2 часа  
+def corr_len(time):
+    if len(time) != 6: 
+        time = '0' * (6-len(time)) + time
+    return time
+      
 
-make_ion_density('20150815.EDR','120000','130000',save=1)
+        
+make_ion_density('20150815.EDR','000000','020000',save=1)
+'''make_ion_density('20150815.EDR','020000','040000',save=1)
+make_ion_density('20150815.EDR','040000','060000',save=1)
+make_ion_density('20150815.EDR','060000','080000',save=1)
+make_ion_density('20150815.EDR','080000','100000',save=1)
+make_ion_density('20150815.EDR','100000','120000',save=1)
+make_ion_density('20150815.EDR','120000','140000',save=1)
+make_ion_density('20150815.EDR','140000','160000',save=1)
+make_ion_density('20150815.EDR','160000','180000',save=1)
+make_ion_density('20150815.EDR','180000','200000',save=1)
+make_ion_density('20150815.EDR','200000','220000',save=1)
+make_ion_density('20150815.EDR','220000','235959',save=1)'''
+
+
+
+
+
+
+
+
+
+
+
+
