@@ -8,8 +8,10 @@ class EDRElems:
         self._amountofelem=amountofelem
         self._array=array
         self.time=time
+    
     def to_df(self):
         pass
+    
     def _correcttime(self):
         time = self.time
         amount = self._amountofelem
@@ -120,6 +122,7 @@ class Engineering_data(EDRElems):
         self.DM_mode = temp[4::7]
         self.EP_mode = temp[5::7]
         self.VIP_at_edr_start = temp[6::7]
+    
     def to_df(self):
         d = {'ADC_temperature':pd.Series(self.ADC_temperature,index=self.time),
              'SEP_temperature':pd.Series(self.SEP_temperature,index=self.time),

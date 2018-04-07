@@ -52,6 +52,9 @@ def make_ion_density(filename,start='000000',end='235959', save=0):
     starttime = dt.datetime.combine(date, time(start))
     endtime = dt.datetime.combine(date, time(end))
     data_frame = data_frame.loc[starttime:endtime]
+
+
+    #-----------------------------------------------------------------------
     #Строим график
     figure = plt.figure()
     axes = figure.add_subplot(1, 1, 1)
@@ -103,35 +106,9 @@ def make_ion_density(filename,start='000000',end='235959', save=0):
         plt.savefig(name(), dpi=1000)
         os.chdir(root_dir)
         
-#Цикл для вызова функции за весь цепь с периодом 2 часа  
-def corr_len(time):
-    if len(time) != 6: 
-        time = '0' * (6-len(time)) + time
-    return time
-      
+
+
 
         
 make_ion_density('20150815.EDR','000000','020000',save=1)
-'''make_ion_density('20150815.EDR','020000','040000',save=1)
-make_ion_density('20150815.EDR','040000','060000',save=1)
-make_ion_density('20150815.EDR','060000','080000',save=1)
-make_ion_density('20150815.EDR','080000','100000',save=1)
-make_ion_density('20150815.EDR','100000','120000',save=1)
-make_ion_density('20150815.EDR','120000','140000',save=1)
-make_ion_density('20150815.EDR','140000','160000',save=1)
-make_ion_density('20150815.EDR','160000','180000',save=1)
-make_ion_density('20150815.EDR','180000','200000',save=1)
-make_ion_density('20150815.EDR','200000','220000',save=1)
-make_ion_density('20150815.EDR','220000','235959',save=1)'''
-
-
-
-
-
-
-
-
-
-
-
 
