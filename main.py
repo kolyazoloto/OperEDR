@@ -8,7 +8,7 @@ import os
 import pickle as pkl
 import matplotlib as mpl
 
-def make_ion_density(filename,start='000000',end='235959', number=1, save=0):
+def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     #Открываем требуемый файл
     edr = EDRread.OpenEDR(filename)
     # Достаем необходимые данные из файла
@@ -61,15 +61,12 @@ def make_ion_density(filename,start='000000',end='235959', number=1, save=0):
     
     #---------------------------------------------------------
     #С каким периодом строить графики
-    graph_delta = (starttime - endtime)/number
-    #-----------------------------------------------------------------------
+    graph_delta = (endtime - starttime)/graph_num
     start_graph_time = starttime
     end_graph_time = start_graph_time + graph_delta
     
-    while end_graph_time <= endtime:
-        data_frame = data_frame.loc[start_graph_time:end_graph_time]
-        start_graph_time = end_graph_time
-        end_graph_time = start_graph_time + graph_delta
+    for i in range(graph_num):
+        period_frame = data_frame.loc[start_graph_time:end_graph_time]
         #Строим график
         figure = plt.figure()
         axes = figure.add_subplot(1, 1, 1)
@@ -82,9 +79,9 @@ def make_ion_density(filename,start='000000',end='235959', number=1, save=0):
         #Нормируем cbar
         #normalize = mpl.colors.Normalize(vmin=1e10, vmax=vmax_cbar)
         #
-        plt.scatter(x=data_frame[lon],
-                    y=data_frame[lat],
-                    c=data_frame['Ion_density'],
+        plt.scatter(x=period_frame[lon],
+                    y=period_frame[lat],
+                    c=period_frame['Ion_density'],
                     cmap='inferno',
                     linewidth=0,
                     figure=figure)
@@ -100,9 +97,10 @@ def make_ion_density(filename,start='000000',end='235959', number=1, save=0):
         #Приводим рисунок к хорошему виду
         plt.grid()
         #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
-        format_date = lambda x:'%3s:%s:%s' % tuple([x[i:i+2] for i in range(6)[::2]])
-        plt.title(date.strftime('%Y-%m-%d')+'              '+
-                  format_date(start)+' --'+format_date(end))
+        plt.title(date.strftime('%Y-%m-%d')+' '*17+
+                  str(start_graph_time.time())[:8]+
+                  ' -- '+
+                  str(end_graph_time.time())[:8])
         #colorbar
         cbar = plt.colorbar()
         cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
@@ -115,17 +113,24 @@ def make_ion_density(filename,start='000000',end='235959', number=1, save=0):
         root_dir = os.getcwd()
         date_str = date.strftime('%Y-%m-%d')
         if save == 1:
-            name = lambda : start+'--'+end
+            name = lambda : (start_graph_time.strftime('%H%M%S')+
+                            '--'+
+                            end_graph_time.strftime('%H%M%S'))
             os.chdir(root_dir+'\\pictures')
             if date_str not in os.listdir():
                 os.mkdir(os.getcwd()+'\\'+date_str)
             os.chdir(os.getcwd()+'\\'+date_str)                                                                                        
             plt.savefig(name(), dpi=1000)
             os.chdir(root_dir)
+        #-------------------------------------------------
+        #Обновим период постройки графика
+        start_graph_time = end_graph_time
+        end_graph_time = start_graph_time + graph_delta
+        
         
 
 
 
         
-make_ion_density('20150815.EDR','000000','020000',save=1)
+make_ion_density('20150815.EDR','000000','050000',graph_num=2, save=1)
 
