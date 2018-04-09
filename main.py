@@ -8,7 +8,7 @@ import os
 import pickle as pkl
 import matplotlib as mpl
 
-def make_ion_density(filename,start='000000',end='235959', save=0):
+def make_ion_density(filename,start='000000',end='235959', number=1, save=0):
     #Открываем требуемый файл
     edr = EDRread.OpenEDR(filename)
     # Достаем необходимые данные из файла
@@ -21,15 +21,19 @@ def make_ion_density(filename,start='000000',end='235959', save=0):
 
     latitude = ephemeris[lat]
     longitude = ephemeris[lon]
+    
     #Формируем датафрейм без колонок с общим временем
     starttime = ephemeris.index[0]
     time_range = pd.date_range(start = starttime, periods = 86400, freq = "s")
     data_frame = pd.DataFrame(index = time_range)
+    
     #Совмещаем все данные в data_frame
     data_frame[lon] = longitude
     data_frame[lat] = latitude
+    
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
     data_frame['Ion_density'] = ion_density[:]*1000000
+    
     ##
     # Исправляем ошибку интерполяции и интерполируем
     correct_interpol = np.where(data_frame[lon]<10)
@@ -39,11 +43,14 @@ def make_ion_density(filename,start='000000',end='235959', save=0):
         else:
             data_frame[lon][i+1] = 360    
     data_frame = data_frame.interpolate()
+    
     #Для нормирования колорбара возмем максимальное значение)
     vmax_cbar = data_frame['Ion_density'].max()
     vmin_cbar = data_frame['Ion_density'].min()
+    
     #Отрегулируем значения долготы
     data_frame[lon][data_frame[lon]>180] -= 360 
+    
     #Берем в необходимых пределах     
     date = data_frame.index[0].date()
     time = lambda x : dt.time(hour=int(x[0:2]),
@@ -51,60 +58,70 @@ def make_ion_density(filename,start='000000',end='235959', save=0):
                               second=int(x[4:]))
     starttime = dt.datetime.combine(date, time(start))
     endtime = dt.datetime.combine(date, time(end))
-    data_frame = data_frame.loc[starttime:endtime]
-
-
+    
+    #---------------------------------------------------------
+    #С каким периодом строить графики
+    graph_delta = (starttime - endtime)/number
     #-----------------------------------------------------------------------
-    #Строим график
-    figure = plt.figure()
-    axes = figure.add_subplot(1, 1, 1)
-    world_map = pkl.load(open('wm.pkl','rb'))
-    plt.plot(world_map[:, 0],world_map[:, 1],
-             c='gray',
-             zorder=0,
-             figure=figure)
-    #Нормируем cbar
-    #normalize = mpl.colors.Normalize(vmin=1e10, vmax=vmax_cbar)
-    #
-    plt.scatter(x=data_frame[lon],
-                y=data_frame[lat],
-                c=data_frame['Ion_density'],
-                cmap='inferno',
-                linewidth=0,
-                figure=figure)
-                #norm=normalize)
-    plt.xlim(-180,180)
-    #Ставим верные метки на осях
-    locator = mpl.ticker.MultipleLocator(base=60)
-    axes.xaxis.set_major_locator(locator)
-    locator = mpl.ticker.MultipleLocator(base=30)
-    axes.yaxis.set_major_locator(locator)
+    start_graph_time = starttime
+    end_graph_time = start_graph_time + graph_delta
     
-    #Приводим рисунок к хорошему виду
-    plt.grid()
-    #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
-    format_date = lambda x:'%3s:%s:%s' % tuple([x[i:i+2] for i in range(6)[::2]])
-    plt.title(date.strftime('%Y-%m-%d')+'              '+
-              format_date(start)+' --'+format_date(end))
-    #colorbar
-    cbar = plt.colorbar()
-    cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
-    #Подпищем оси
-    plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
-    plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
-    #Поменяем размерность
-    
-    #Cохраняем изображение
-    root_dir = os.getcwd()
-    date_str = date.strftime('%Y-%m-%d')
-    if save == 1:
-        name = lambda : start+'--'+end
-        os.chdir(root_dir+'\\pictures')
-        if date_str not in os.listdir():
-            os.mkdir(os.getcwd()+'\\'+date_str)
-        os.chdir(os.getcwd()+'\\'+date_str)                                                                                        
-        plt.savefig(name(), dpi=1000)
-        os.chdir(root_dir)
+    while end_graph_time <= endtime:
+        data_frame = data_frame.loc[start_graph_time:end_graph_time]
+        start_graph_time = end_graph_time
+        end_graph_time = start_graph_time + graph_delta
+        #Строим график
+        figure = plt.figure()
+        axes = figure.add_subplot(1, 1, 1)
+        world_map = pkl.load(open('wm.pkl','rb'))
+        plt.plot(world_map[:, 0],world_map[:, 1],
+                 c='gray',
+                 zorder=0,
+                 figure=figure)
+        
+        #Нормируем cbar
+        #normalize = mpl.colors.Normalize(vmin=1e10, vmax=vmax_cbar)
+        #
+        plt.scatter(x=data_frame[lon],
+                    y=data_frame[lat],
+                    c=data_frame['Ion_density'],
+                    cmap='inferno',
+                    linewidth=0,
+                    figure=figure)
+                    #norm=normalize)
+        plt.xlim(-180,180)
+        
+        #Ставим верные метки на осях
+        locator = mpl.ticker.MultipleLocator(base=60)
+        axes.xaxis.set_major_locator(locator)
+        locator = mpl.ticker.MultipleLocator(base=30)
+        axes.yaxis.set_major_locator(locator)
+        
+        #Приводим рисунок к хорошему виду
+        plt.grid()
+        #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
+        format_date = lambda x:'%3s:%s:%s' % tuple([x[i:i+2] for i in range(6)[::2]])
+        plt.title(date.strftime('%Y-%m-%d')+'              '+
+                  format_date(start)+' --'+format_date(end))
+        #colorbar
+        cbar = plt.colorbar()
+        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
+        #Подпищем оси
+        plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
+        plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
+        #Поменяем размерность
+        
+        #Cохраняем изображение
+        root_dir = os.getcwd()
+        date_str = date.strftime('%Y-%m-%d')
+        if save == 1:
+            name = lambda : start+'--'+end
+            os.chdir(root_dir+'\\pictures')
+            if date_str not in os.listdir():
+                os.mkdir(os.getcwd()+'\\'+date_str)
+            os.chdir(os.getcwd()+'\\'+date_str)                                                                                        
+            plt.savefig(name(), dpi=1000)
+            os.chdir(root_dir)
         
 
 
