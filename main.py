@@ -77,16 +77,18 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                  figure=figure)
         
         #Нормируем cbar
-        #normalize = mpl.colors.Normalize(vmin=1e10, vmax=vmax_cbar)
+        normalize = mpl.colors.Normalize(vmax=10e10)
         #
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
                     c=period_frame['Ion_density'],
-                    cmap='inferno',
+                    cmap='spectral',
                     linewidth=0,
-                    figure=figure)
-                    #norm=normalize)
+                    figure=figure,
+                    norm=normalize)
         plt.xlim(-180,180)
+        #plt.ylim(-70,-20)
+        #plt.xlim(-20,80)
         
         #Ставим верные метки на осях
         locator = mpl.ticker.MultipleLocator(base=60)
@@ -132,5 +134,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 
         
-make_ion_density('20150815.EDR','000000','050000',graph_num=2, save=1)
+make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F18-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','000000','235959',graph_num=12, save=1)
 
