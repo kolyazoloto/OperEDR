@@ -8,7 +8,10 @@ import os
 import pickle as pkl
 import matplotlib as mpl
 
+
 def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
+    
+    
     #Открываем требуемый файл
     edr = EDRread.OpenEDR(filename)
     # Достаем необходимые данные из файла
@@ -68,7 +71,6 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     for i in range(graph_num):
         period_frame = data_frame.loc[start_graph_time:end_graph_time]
         #Строим график
-        figure = plt.figure()
         axes = figure.add_subplot(1, 1, 1)
         world_map = pkl.load(open('wm.pkl','rb'))
         plt.plot(world_map[:, 0],world_map[:, 1],
@@ -86,30 +88,31 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                     linewidth=0,
                     figure=figure,
                     norm=normalize)
-        plt.xlim(-180,180)
-        #plt.ylim(-70,-20)
-        #plt.xlim(-20,80)
-        
-        #Ставим верные метки на осях
-        locator = mpl.ticker.MultipleLocator(base=60)
-        axes.xaxis.set_major_locator(locator)
-        locator = mpl.ticker.MultipleLocator(base=30)
-        axes.yaxis.set_major_locator(locator)
-        
-        #Приводим рисунок к хорошему виду
-        plt.grid()
-        #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
-        plt.title(date.strftime('%Y-%m-%d')+' '*17+
-                  str(start_graph_time.time())[:8]+
-                  ' -- '+
-                  str(end_graph_time.time())[:8])
-        #colorbar
-        cbar = plt.colorbar()
-        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
-        #Подпищем оси
-        plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
-        plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
-        #Поменяем размерность
+        if check == 0:
+            plt.xlim(-180,180)
+            #plt.ylim(-70,-20)
+            #plt.xlim(-20,80)
+            
+            #Ставим верные метки на осях
+            locator = mpl.ticker.MultipleLocator(base=60)
+            axes.xaxis.set_major_locator(locator)
+            locator = mpl.ticker.MultipleLocator(base=30)
+            axes.yaxis.set_major_locator(locator)
+            
+            #Приводим рисунок к хорошему виду
+            plt.grid()
+            #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
+            plt.title(date.strftime('%Y-%m-%d')+' '*17+
+                      str(start_graph_time.time())[:8]+
+                      ' -- '+
+                      str(end_graph_time.time())[:8])
+            #colorbar
+            cbar = plt.colorbar()
+            cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
+            #Подпищем оси
+            plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
+            plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
+        global check += 1
         
         #Cохраняем изображение
         root_dir = os.getcwd()
@@ -128,11 +131,15 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         #Обновим период постройки графика
         start_graph_time = end_graph_time
         end_graph_time = start_graph_time + graph_delta
-        
+    
+
         
 
 
-
+figure = plt.figure()
         
-make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F18-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','000000','235959',graph_num=12, save=1)
+make_ion_density('20150815.EDR','124000','141000',graph_num=1, save=0)
+make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F16-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000001-235959_DF.EDR','124000','141000',graph_num=1, save=0)
+make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F17-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','124000','141000',graph_num=1, save=0)
+make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F18-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','124000','141000',graph_num=1, save=0)
 
