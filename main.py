@@ -31,9 +31,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     data_frame[lon] = longitude
     data_frame[lat] = latitude
     
-    #Добавим плотность ионов и мереведем в метр на метр в квадрате
-    data_frame['Ion_density'] = ion_density[:]*1000000
-    
+                                              
     ##
     # Исправляем ошибку интерполяции и интерполируем
     correct_interpol = np.where(data_frame[lon]<10)
@@ -43,7 +41,17 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         else:
             data_frame[lon][i+1] = 360    
     data_frame = data_frame.interpolate()
-    
+     #Добавим плотность ионов и мереведем в метр на метр в квадрате
+    data_frame['Ion_density'] = ion_density[:]*1000000
+    #Добавим столбик производной
+    #delta_time = data_frame.index[1]-data_frame.index[0]
+    #diff = np.diff(data_frame['Ion_density'])
+    #не хватает одного значения
+    #diff = list(diff)
+    #diff.append(1)
+    #diff = [i/delta_time.seconds for i in diff]
+    #data_frame['Ion_density_diff'] = diff
+    print(data_frame[:30]) 
     #Для нормирования колорбара возмем максимальное значение)
     vmax_cbar = data_frame['Ion_density'].max()
     vmin_cbar = data_frame['Ion_density'].min()
@@ -77,15 +85,15 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                  figure=figure)
         
         #Нормируем cbar
-        normalize = mpl.colors.Normalize(vmax=10e10)
+        #normalize = mpl.colors.Normalize(vmax=10e10)
         #
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
                     c=period_frame['Ion_density'],
                     cmap='spectral',
                     linewidth=0,
-                    figure=figure,
-                    norm=normalize)
+                    figure=figure)
+                    #norm=normalize)
         plt.xlim(-180,180)
         #plt.ylim(-70,-20)
         #plt.xlim(-20,80)
@@ -134,5 +142,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 
         
-make_ion_density('20150622f18.EDR','180000','190000',graph_num=1, save=1)
+make_ion_density('20150622f15.EDR',graph_num=1, save=0)
 
