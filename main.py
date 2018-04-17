@@ -88,31 +88,30 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                     linewidth=0,
                     figure=figure,
                     norm=normalize)
-        if check == 0:
-            plt.xlim(-180,180)
-            #plt.ylim(-70,-20)
-            #plt.xlim(-20,80)
-            
-            #Ставим верные метки на осях
-            locator = mpl.ticker.MultipleLocator(base=60)
-            axes.xaxis.set_major_locator(locator)
-            locator = mpl.ticker.MultipleLocator(base=30)
-            axes.yaxis.set_major_locator(locator)
-            
-            #Приводим рисунок к хорошему виду
-            plt.grid()
-            #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
-            plt.title(date.strftime('%Y-%m-%d')+' '*17+
-                      str(start_graph_time.time())[:8]+
-                      ' -- '+
-                      str(end_graph_time.time())[:8])
-            #colorbar
-            cbar = plt.colorbar()
-            cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
-            #Подпищем оси
-            plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
-            plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
-        global check += 1
+        plt.xlim(-180,180)
+        #plt.ylim(-70,-20)
+        #plt.xlim(-20,80)
+        
+        #Ставим верные метки на осях
+        locator = mpl.ticker.MultipleLocator(base=60)
+        axes.xaxis.set_major_locator(locator)
+        locator = mpl.ticker.MultipleLocator(base=30)
+        axes.yaxis.set_major_locator(locator)
+        
+        #Приводим рисунок к хорошему виду
+        plt.grid()
+        #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
+        plt.title(date.strftime('%Y-%m-%d')+' '*17+
+                  str(start_graph_time.time())[:8]+
+                  ' -- '+
+                  str(end_graph_time.time())[:8])
+        #colorbar
+        cbar = plt.colorbar()
+        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
+        #Подпищем оси
+        plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
+        plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
+
         
         #Cохраняем изображение
         root_dir = os.getcwd()
