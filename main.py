@@ -134,5 +134,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 
         
-make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F18-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','000000','235959',graph_num=12, save=1)
+make_ion_density('20150622f18.EDR','180000','190000',graph_num=1, save=1)
 
