@@ -133,10 +133,11 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 figure = plt.figure()
         
-make_ion_density('20150815.EDR','124000','141000',graph_num=1, save=0)
-make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F16-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000001-235959_DF.EDR','124000','141000',graph_num=1, save=0)
-make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F17-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','124000','141000',graph_num=1, save=0)
-make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F18-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','124000','141000',graph_num=1, save=0)
+make_ion_density('20150622f15.EDR','173000','180000',graph_num=1, save=0)
+make_ion_density('20150622f16.EDR','173000','180000',graph_num=1, save=0)
+make_ion_density('20150622f17.EDR','173000','180000',graph_num=1, save=0)
+make_ion_density('20150622f18.EDR','173000','180000',graph_num=1, save=0)
+
 
 cbar = plt.colorbar()
 cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
