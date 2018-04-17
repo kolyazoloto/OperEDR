@@ -106,11 +106,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                   ' -- '+
                   str(end_graph_time.time())[:8])
         #colorbar
-        cbar = plt.colorbar()
-        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
-        #Подпищем оси
-        plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
-        plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
+        
 
         
         #Cохраняем изображение
@@ -142,3 +138,8 @@ make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F16-R99990-B9999090-APGA_AR.GLOBAL
 make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F17-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','124000','141000',graph_num=1, save=0)
 make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F18-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','124000','141000',graph_num=1, save=0)
 
+cbar = plt.colorbar()
+cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
+#Подпищем оси
+plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
+plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
