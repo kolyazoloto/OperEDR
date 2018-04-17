@@ -30,11 +30,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     #Совмещаем все данные в data_frame
     data_frame[lon] = longitude
     data_frame[lat] = latitude
-    
-    #Добавим плотность ионов и мереведем в метр на метр в квадрате
-    data_frame['Ion_density'] = ion_density[:]*1000000
-    
-    ##
+        ##
     # Исправляем ошибку интерполяции и интерполируем
     correct_interpol = np.where(data_frame[lon]<10)
     for i in correct_interpol[0]:
@@ -43,6 +39,10 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         else:
             data_frame[lon][i+1] = 360    
     data_frame = data_frame.interpolate()
+    #Добавим плотность ионов и мереведем в метр на метр в квадрате
+    data_frame['Ion_density'] = ion_density[:]*1000000
+    print(data_frame[:100])
+
     
     #Для нормирования колорбара возмем максимальное значение)
     vmax_cbar = data_frame['Ion_density'].max()
@@ -134,5 +134,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 
         
-make_ion_density('20150622f18.EDR','180000','190000',graph_num=1, save=1)
+make_ion_density('20150815.EDR',graph_num=1, save=1)
 
