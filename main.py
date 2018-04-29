@@ -98,26 +98,29 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         
         #Приводим рисунок к хорошему виду
         plt.grid()
-        #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
-        plt.title(date.strftime('%Y-%m-%d')+' '*17+
+        #Название
+        plt.title('F'+satelite_model+' '*60+'\n'+
+                  date.strftime('%Y-%m-%d')+' '*16+
                   str(start_graph_time.time())[:8]+
                   ' -- '+
                   str(end_graph_time.time())[:8])
+             
         #colorbar
         cbar = plt.colorbar()
         cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
         #Подпищем оси
         plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
         plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
-        #Поменяем размерность
+        
         
         #Cохраняем изображение
         root_dir = os.getcwd()
         date_str = date.strftime('%Y-%m-%d')
         if save == 1:
-            name = lambda : (start_graph_time.strftime('%H%M%S')+
-                            '--'+
-                            end_graph_time.strftime('%H%M%S'))
+            name = lambda : ('F'+satelite_model+'  '+
+                             start_graph_time.strftime('%H%M%S')+
+                             '--'+
+                             end_graph_time.strftime('%H%M%S'))
             os.chdir(root_dir+'\\pictures')
             if date_str not in os.listdir():
                 os.mkdir(os.getcwd()+'\\'+date_str)
@@ -134,5 +137,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 
         
-make_ion_density('20150815.EDR',graph_num=1, save=1)
+make_ion_density('20150815.EDR','000000','050000',graph_num=1, save=1)
 
