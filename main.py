@@ -13,7 +13,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     edr = EDRread.OpenEDR(filename)
     # Достаем необходимые данные из файла
     satelite_model = edr.satelite_model
-    temp = edr.dm_ion_density()
+    temp = edr.rpa_sweep_analyses()['RPA_derived_total_ion_density']
     ion_density = temp.where(temp != -1.000000e+37)
     
     ephemeris = edr.ephemeris()
@@ -25,7 +25,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     
     #Формируем датафрейм без колонок с общим временем
     starttime = ephemeris.index[0]
-    time_range = pd.date_range(start = starttime, periods = 86400, freq = "s")
+    time_range = pd.date_range(start = starttime, periods = 86400, freq = "4s")
     data_frame = pd.DataFrame(index = time_range)
     
     #Совмещаем все данные в data_frame
@@ -33,13 +33,13 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     data_frame[lat] = latitude
         ##
     # Исправляем ошибку интерполяции и интерполируем
-    correct_interpol = np.where(data_frame[lon]<10)
+    '''correct_interpol = np.where(data_frame[lon]<10)
     for i in correct_interpol[0]:
         if data_frame[lon][i+20] < 10:
             continue
         else:
             data_frame[lon][i+1] = 360    
-    data_frame = data_frame.interpolate()
+    data_frame = data_frame.interpolate()'''
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
     data_frame['Ion_density'] = ion_density[:]*1000000
 
@@ -134,5 +134,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 
         
-make_ion_density('20150815.EDR',graph_num=1, save=1)
+make_ion_density('20150815.EDR','120000','140000',graph_num=1, save=1)
 
