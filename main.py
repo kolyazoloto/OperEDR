@@ -12,6 +12,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     #Открываем требуемый файл
     edr = EDRread.OpenEDR(filename)
     # Достаем необходимые данные из файла
+    satelite_model = edr.satelite_model
     temp = edr.dm_ion_density()
     ion_density = temp.where(temp != -1.000000e+37)
     
@@ -41,7 +42,6 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     data_frame = data_frame.interpolate()
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
     data_frame['Ion_density'] = ion_density[:]*1000000
-    print(data_frame[:100])
 
     
     #Для нормирования колорбара возмем максимальное значение)
