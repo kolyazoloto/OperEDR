@@ -32,14 +32,6 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     data_frame[lon] = longitude
     data_frame[lat] = latitude
         ##
-    # Исправляем ошибку интерполяции и интерполируем
-    '''correct_interpol = np.where(data_frame[lon]<10)
-    for i in correct_interpol[0]:
-        if data_frame[lon][i+20] < 10:
-            continue
-        else:
-            data_frame[lon][i+1] = 360    
-    data_frame = data_frame.interpolate()'''
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
     data_frame['Ion_density'] = ion_density[:]*1000000
 
@@ -138,5 +130,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
         
 
-make_ion_density('F1820150815.EDR','120000','140000',graph_num=1, save=1)
+make_ion_density('20150727.EDR',graph_num=12, save=1)
 
