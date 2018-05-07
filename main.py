@@ -82,7 +82,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
                     c=period_frame['Ion_density'],
-                    cmap='spectral',
+                    cmap='nipy_spectral',
                     linewidth=0,
                     figure=figure,
                     norm=normalize)
@@ -138,5 +138,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
         
 
-make_ion_density('PS.CKGWC_SC.U_DI.A_GP.SIES3-F17-R99990-B9999090-APGA_AR.GLOBAL_DD.20150815_TP.000002-235959_DF.EDR','120000','140000',graph_num=1, save=1)
+make_ion_density('F1820150815.EDR','120000','140000',graph_num=1, save=1)
 
