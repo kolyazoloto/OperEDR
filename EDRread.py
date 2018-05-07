@@ -24,7 +24,18 @@ class OpenEDR:
                                             "FILLER"
                                 ])
         self._time = self._inittime()
+        self.satelite_model = self._satelite_model()
     
+    def _satelite_model(self):
+        systype = self._examples.index[0]
+        data = self._data
+        for i in range(len(data)):
+            if systype in data[i]:
+                temp = data[i+1].split()
+                model = temp[2]
+                break
+        return model
+        
     def _inittime(self):
         time = []
         systype = self._examples.index[0]
