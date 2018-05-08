@@ -34,12 +34,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         ##
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
     data_frame['Ion_density'] = ion_density[:]*1000000
-
-    
-    #Для нормирования колорбара возмем максимальное значение)
-    vmax_cbar = data_frame['Ion_density'].max()
-    vmin_cbar = data_frame['Ion_density'].min()
-    
+    print (data_frame[:20])
     #Отрегулируем значения долготы
     data_frame[lon][data_frame[lon]>180] -= 360 
     
@@ -130,5 +125,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
         
 
-make_ion_density('20150727.EDR',graph_num=12, save=1)
+make_ion_density('F1520150815.EDR','000000','040000',graph_num=1, save=0)
 
