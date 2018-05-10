@@ -25,7 +25,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     
     #Формируем датафрейм без колонок с общим временем
     starttime = ephemeris.index[0]
-    time_range = pd.date_range(start = starttime, periods = 86400, freq = "4s")
+    time_range = pd.date_range(start = starttime, periods = 86400/4, freq = "4s")
     data_frame = pd.DataFrame(index = time_range)
     
     #Совмещаем все данные в data_frame
