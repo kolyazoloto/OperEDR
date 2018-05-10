@@ -25,7 +25,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     
     #Формируем датафрейм без колонок с общим временем
     starttime = ephemeris.index[0]
-    time_range = pd.date_range(start = starttime, periods = 86400, freq = "4s")
+    time_range = pd.date_range(start = starttime, periods = 86400/4, freq = "4s")
     data_frame = pd.DataFrame(index = time_range)
     
     #Совмещаем все данные в data_frame
@@ -42,15 +42,13 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
     data_frame['Ion_density'] = ion_density[:]*1000000
     #Добавим столбик производной
-    #delta_time = data_frame.index[1]-data_frame.index[0]
-    #diff = np.diff(data_frame['Ion_density'])
+    delta_time = data_frame.index[1]-data_frame.index[0]
+    diff = np.diff(data_frame['Ion_density'])
     #не хватает одного значения
-    #diff = list(diff)
-    #diff.append(1)
-    #diff = [i/delta_time.seconds for i in diff]
-    #data_frame['Ion_density_diff'] = diff
-    print(data_frame[:32]) 
-
+    diff = list(diff)
+    diff.insert(0,np.nan)
+    diff = [i/delta_time.seconds for i in diff]
+    data_frame['Ion_density_diff'] = diff
 
     #Отрегулируем значения долготы
     data_frame[lon][data_frame[lon]>180] -= 360 
@@ -62,6 +60,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                               second=int(x[4:]))
     starttime = dt.datetime.combine(date, time(start))
     endtime = dt.datetime.combine(date, time(end))
+
     
     #---------------------------------------------------------
     #С каким периодом строить графики
@@ -71,6 +70,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     
     for i in range(graph_num):
         period_frame = data_frame.loc[start_graph_time:end_graph_time]
+        plt.plot( period_frame['Ion_density_diff'])
         #Строим график
         figure = plt.figure()
         axes = figure.add_subplot(1, 1, 1)
@@ -81,15 +81,15 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                  figure=figure)
         
         #Нормируем cbar
-        normalize = mpl.colors.Normalize(vmax=10e10)
+        #normalize = mpl.colors.Normalize(vmax=0)
         
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
-                    c=period_frame['Ion_density'],
+                    c=period_frame['Ion_density_diff'],
                     cmap='nipy_spectral',
                     linewidth=0,
-                    figure=figure,
-                    norm=normalize)
+                    figure=figure)
+                    #norm=normalize)
         plt.xlim(-180,180)
         #plt.ylim(-70,-20)
         #plt.xlim(-20,80)
@@ -137,6 +137,6 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         end_graph_time = start_graph_time + graph_delta
 
 
-make_ion_density('F1520150815.EDR','000000','040000',graph_num=1, save=0)
+make_ion_density('F1520150815.EDR','140000','182000',graph_num=1, save=0)
 
 
