@@ -126,10 +126,10 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 figure = plt.figure()
         
 
-make_ion_density('F1520180509.EDR','133500','142500',graph_num=1, save=0)
-make_ion_density('F1620180509.EDR','133500','142500',graph_num=1, save=0)
-#make_ion_density('F1720180509.EDR','133000','140000',graph_num=1, save=0)
-#make_ion_density('F1820180509.EDR','133000','140000',graph_num=1, save=0)
+#make_ion_density('F1520151208.EDR','133000','141000',graph_num=1, save=0)
+make_ion_density('F1620151208.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1720151208.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1820151208.EDR','130000','140000',graph_num=1, save=0)
 
 
 
