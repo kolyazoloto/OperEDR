@@ -13,7 +13,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     edr = EDRread.OpenEDR(filename)
     # Достаем необходимые данные из файла
     satelite_model = edr.satelite_model
-    temp = edr.rpa_sweep_analyses()['RPA_derived_total_ion_density']
+    temp = edr.dm_ion_density()
     ion_density = temp.where(temp != -1.000000e+37)
     
     ephemeris = edr.ephemeris()
@@ -25,7 +25,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     
     #Формируем датафрейм без колонок с общим временем
     starttime = ephemeris.index[0]
-    time_range = pd.date_range(start = starttime, periods = 86400/4, freq = "4s")
+    time_range = pd.date_range(start = starttime, periods = 86400, freq = "s")
     data_frame = pd.DataFrame(index = time_range)
     
     #Совмещаем все данные в data_frame
@@ -35,7 +35,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     #Корректируем интерполяцию и интерполируем
     correct_interpol = np.where(data_frame[lon]<10)
     for i in correct_interpol[0]:
-        if data_frame[lon][i+5] < 10:
+        if data_frame[lon][i+20] < 10:
             continue
         else:
             data_frame[lon][i+1] = 360    
