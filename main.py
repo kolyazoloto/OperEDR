@@ -71,6 +71,8 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     for i in range(graph_num):
         period_frame = data_frame.loc[start_graph_time:end_graph_time]
         plt.plot( period_frame['Ion_density_diff'])
+        plt.figure()
+        plt.plot( period_frame['Ion_density'],c = 'red')
         #Строим график
         figure = plt.figure()
         axes = figure.add_subplot(1, 1, 1)
@@ -137,6 +139,6 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         end_graph_time = start_graph_time + graph_delta
 
 
-make_ion_density('F1520150815.EDR','140000','182000',graph_num=1, save=0)
+make_ion_density('F1520150815.EDR','020000','030000',graph_num=1, save=0)
 
 
