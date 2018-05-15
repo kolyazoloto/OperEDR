@@ -15,7 +15,8 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     #Открываем требуемый файл
     edr = EDRread.OpenEDR(filename)
     # Достаем необходимые данные из файла
-    temp = edr.dm_ion_density()
+    satelite_model = edr.satelite_model
+    temp = edr.rpa_sweep_analyses()['RPA_derived_total_ion_density']
     ion_density = temp.where(temp != -1.000000e+37)
     
     ephemeris = edr.ephemeris()
@@ -27,17 +28,17 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     
     #Формируем датафрейм без колонок с общим временем
     starttime = ephemeris.index[0]
-    time_range = pd.date_range(start = starttime, periods = 86400, freq = "s")
+    time_range = pd.date_range(start = starttime, periods = 86400/4, freq = "4s")
     data_frame = pd.DataFrame(index = time_range)
     
     #Совмещаем все данные в data_frame
     data_frame[lon] = longitude
     data_frame[lat] = latitude
         ##
-    # Исправляем ошибку интерполяции и интерполируем
+    #Корректируем интерполяцию и интерполируем
     correct_interpol = np.where(data_frame[lon]<10)
     for i in correct_interpol[0]:
-        if data_frame[lon][i+20] < 10:
+        if data_frame[lon][i+5] < 10:
             continue
         else:
             data_frame[lon][i+1] = 360    
@@ -77,7 +78,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
                     c=period_frame['Ion_density'],
-                    cmap='spectral',
+                    cmap='nipy_spectral',
                     linewidth=0,
                     figure=figure,
                     norm=normalize)
@@ -93,22 +94,20 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         
         #Приводим рисунок к хорошему виду
         plt.grid()
-        #Сдесь я беру время ,переделываю его в кортеж,где отдельно время дата и тд
-        plt.title(date.strftime('%Y-%m-%d')+' '*17+
+        #Название
+        plt.title('F'+satelite_model+' '*60+'\n'+
+                  date.strftime('%Y-%m-%d')+' '*16+
                   str(start_graph_time.time())[:8]+
                   ' -- '+
                   str(end_graph_time.time())[:8])
-        #colorbar
-        
-
         
         #Cохраняем изображение
         root_dir = os.getcwd()
         date_str = date.strftime('%Y-%m-%d')
         if save == 1:
             name = lambda : (start_graph_time.strftime('%H%M%S')+
-                            '--'+
-                            end_graph_time.strftime('%H%M%S'))
+                             '--'+
+                             end_graph_time.strftime('%H%M%S'))
             os.chdir(root_dir+'\\pictures')
             if date_str not in os.listdir():
                 os.mkdir(os.getcwd()+'\\'+date_str)
@@ -127,10 +126,10 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 figure = plt.figure()
         
 
-make_ion_density('20150622f15.EDR','173000','180000',graph_num=1, save=0)
-make_ion_density('20150622f16.EDR','173000','180000',graph_num=1, save=0)
-make_ion_density('20150622f17.EDR','173000','180000',graph_num=1, save=0)
-make_ion_density('20150622f18.EDR','173000','180000',graph_num=1, save=0)
+make_ion_density('F1520150815.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1620150815.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1720150815.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1820150815.EDR','130000','140000',graph_num=1, save=0)
 
 
 
