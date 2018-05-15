@@ -42,7 +42,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
     data_frame = data_frame.interpolate()
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
     data_frame['Ion_density'] = ion_density[:]*1000000
-    print (data_frame[:20])
+    
     #Отрегулируем значения долготы
     data_frame[lon][data_frame[lon]>180] -= 360 
     
@@ -133,5 +133,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
         
 
-make_ion_density('F1520150815.EDR','000000','040000',graph_num=1, save=0)
+make_ion_density('F1520150814.EDR','130000','140000',graph_num=1, save=1)
 
