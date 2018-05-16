@@ -83,6 +83,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                     figure=figure,
                     norm=normalize)
         plt.xlim(-180,180)
+        plt.ylim(-90,90)
         #plt.ylim(-70,-20)
         #plt.xlim(-20,80)
         
@@ -127,10 +128,13 @@ plt.grid()
 make_ion_density('F1520150815.EDR','130000','140000',graph_num=1, save=0)
 make_ion_density('F1620150815.EDR','130000','140000',graph_num=1, save=0)
 make_ion_density('F1720150815.EDR','130000','140000',graph_num=1, save=0)
-make_ion_density('F1820150815.EDR','130000','140000',graph_num=1, save=1)
 
 cbar = plt.colorbar()
 cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
 #Подпищем оси
 plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
 plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
+
+
+make_ion_density('F1820150815.EDR','130000','140000',graph_num=1, save=0)
+
