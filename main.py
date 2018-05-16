@@ -95,12 +95,10 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         #Приводим рисунок к хорошему виду
         plt.grid()
         #Название
-        plt.title('F'+satelite_model+' '*60+'\n'+
-                  date.strftime('%Y-%m-%d')+' '*16+
+        plt.title(date.strftime('%Y-%m-%d')+' '*16+
                   str(start_graph_time.time())[:8]+
                   ' -- '+
                   str(end_graph_time.time())[:8])
-        
         #Cохраняем изображение
         root_dir = os.getcwd()
         date_str = date.strftime('%Y-%m-%d')
@@ -124,14 +122,12 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
 
 figure = plt.figure()
-        
+plt.grid()      
 
-#make_ion_density('F1520151208.EDR','133000','141000',graph_num=1, save=0)
-make_ion_density('F1620151208.EDR','130000','140000',graph_num=1, save=0)
-make_ion_density('F1720151208.EDR','130000','140000',graph_num=1, save=0)
-make_ion_density('F1820151208.EDR','130000','140000',graph_num=1, save=0)
-
-
+make_ion_density('F1520150815.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1620150815.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1720150815.EDR','130000','140000',graph_num=1, save=0)
+make_ion_density('F1820150815.EDR','130000','140000',graph_num=1, save=1)
 
 cbar = plt.colorbar()
 cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
