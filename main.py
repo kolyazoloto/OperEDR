@@ -41,7 +41,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
             data_frame[lon][i+1] = 360    
     data_frame = data_frame.interpolate()
     #Добавим плотность ионов и мереведем в метр на метр в квадрате
-    data_frame['Ion_density'] = ion_density[:]*1000000
+    data_frame['Ion_density'] = ion_density
     #Отрегулируем значения долготы
     data_frame[lon][data_frame[lon]>180] -= 360 
     
@@ -71,7 +71,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                  figure=figure)
         
         #Нормируем cbar
-        normalize = mpl.colors.Normalize(vmax=7e10)
+        normalize = mpl.colors.Normalize(vmax=7e4)
         #
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
@@ -101,7 +101,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
              
         #colorbar
         cbar = plt.colorbar()
-        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
+        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/cm^3}$',fontsize=14)
         #Подпищем оси
         plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
         plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
@@ -132,5 +132,5 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
 
         
 
-make_ion_density('F1520150815.EDR','130000','140000',graph_num=1, save=1)
+make_ion_density('F1520180509.EDR','133000','143000',graph_num=1, save=1)
 
