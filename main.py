@@ -72,15 +72,15 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                  figure=figure)
         
         #Нормируем cbar
-        normalize = mpl.colors.Normalize(vmax=18e5)
+        #normalize = mpl.colors.Normalize(vmax=18e5)
         #
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
                     c=period_frame['Ion_density'],
                     cmap='nipy_spectral',
                     linewidth=0,
-                    figure=figure,
-                    norm=normalize)
+                    figure=figure)
+                    #norm=normalize)
         plt.xlim(-180,180)
         #plt.ylim(-70,-20)
         #plt.xlim(-20,80)
@@ -102,7 +102,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
              
         #colorbar
         cbar = plt.colorbar()
-        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/m^3}$',fontsize=14)
+        cbar.set_label(r'$\mathrm{Ion\ density,\ Ion/сm^3}$',fontsize=14)
         #Подпищем оси
         plt.xlabel(r'$\mathrm{Longitude, E^\circ}$', fontsize=14)
         plt.ylabel(r'$\mathrm{Latitude,\ N^\circ}$', fontsize=14)
@@ -134,7 +134,7 @@ print(os.getcwd())
         
 dates = os.listdir(os.getcwd()+'\\XPERIMENT')
 
-make_ion_density(os.getcwd()+'\\XPERIMENT\\'+dates[0],'120000','130000',graph_num=1, save=0)
+make_ion_density(os.getcwd()+'\\XPERIMENT\\'+dates[0],'152700','183000',graph_num=1, save=1)
     
 
 
