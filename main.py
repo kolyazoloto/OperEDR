@@ -71,7 +71,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                  figure=figure)
         
         #Нормируем cbar
-        normalize = mpl.colors.Normalize(vmax=7e4)
+        normalize = mpl.colors.Normalize(vmax=1e5)
         #
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
