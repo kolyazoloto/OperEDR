@@ -129,8 +129,9 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         
 
 
-
+print(os.getcwd())
         
+dates = os.listdir(os.getcwd()+'\\XPERIMENT')
 
-make_ion_density('F1520180509.EDR','133000','143000',graph_num=1, save=1)
+make_ion_density(os.getcwd()+'\\XPERIMENT\\'+dates[0],'124000','140000',graph_num=1, save=0)
 
