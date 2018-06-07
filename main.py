@@ -126,12 +126,9 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
         start_graph_time = end_graph_time
         end_graph_time = start_graph_time + graph_delta
         
-        
 
-
-print(os.getcwd())
         
 dates = os.listdir(os.getcwd()+'\\XPERIMENT')
 
-make_ion_density(os.getcwd()+'\\XPERIMENT\\'+dates[0],'124000','140000',graph_num=1, save=0)
+make_ion_density(os.getcwd()+'\\XPERIMENT\\'+dates[0],'124000','140000',graph_num=1, save=1)
 
