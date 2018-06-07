@@ -72,7 +72,7 @@ def make_ion_density(filename,start='000000',end='235959', graph_num=1, save=0):
                  figure=figure)
         
         #Нормируем cbar
-        normalize = mpl.colors.Normalize(vmax=1e5)
+        normalize = mpl.colors.Normalize(vmax=2e5)
         #
         plt.scatter(x=period_frame[lon],
                     y=period_frame[lat],
@@ -134,7 +134,7 @@ print(os.getcwd())
         
 dates = os.listdir(os.getcwd()+'\\XPERIMENT')
 
-make_ion_density(os.getcwd()+'\\XPERIMENT\\'+dates[0],'124000','140000',graph_num=1, save=1)
+make_ion_density(os.getcwd()+'\\XPERIMENT\\'+dates[3],'123000','132500',graph_num=1, save=1)
     
 
 
